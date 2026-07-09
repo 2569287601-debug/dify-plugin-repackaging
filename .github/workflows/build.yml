@@ -5,7 +5,7 @@ on:
       author:
         description: Plugin Author
         required: true
-        default: langgenius
+        default: sawyer-shi
       plugin:
         description: Plugin Name
         required: true
@@ -13,7 +13,7 @@ on:
       version:
         description: Plugin Version
         required: true
-        default: 0.0.1
+        default: 0.0.3
 
 jobs:
   repackage:
@@ -27,7 +27,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 关键修改：3.11 → 3.12
+      # 核心修复：Python3.12
       - name: Setup Python 3.12
         uses: actions/setup-python@v5
         with:
@@ -36,16 +36,18 @@ jobs:
       - name: Install system dependencies
         run: sudo apt update && sudo apt install -y curl unzip
 
-      - name: Fix script line break & grant permission
+      # 修复Windows换行符+授权脚本
+      - name: Fix script permission & line break
         run: |
           sed -i 's/\r$//' plugin_repackaging.sh
           chmod +x ./plugin_repackaging.sh
 
-      - name: Repackage Seedream AIGC Plugin
+      # 打包脚本内置阿里云pip源，网络加速
+      - name: Run repackaging script
         run: ./plugin_repackaging.sh market ${{ github.event.inputs.author }} ${{ github.event.inputs.plugin }} ${{ github.event.inputs.version }}
 
-      - name: Upload offline package
+      - name: Upload offline difypkg artifact
         uses: actions/upload-artifact@v4
         with:
-          name: seedream-offline-plugin
+          name: seedream-aigc-v0.0.3-offline
           path: "*.difypkg"
