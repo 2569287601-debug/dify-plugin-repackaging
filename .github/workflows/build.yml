@@ -1,18 +1,19 @@
 name: Repackage Dify Plugin
-on: workflow_dispatch:
-  inputs:
-    author:
-      description: Plugin Author
-      required: true
-      default: langgenius
-    plugin:
-      description: Plugin Name
-      required: true
-      default: seedream-aigc
-    version:
-      description: Plugin Version
-      required: true
-      default: 0.0.1
+on:
+  workflow_dispatch:
+    inputs:
+      author:
+        description: Plugin Author
+        required: true
+        default: langgenius
+      plugin:
+        description: Plugin Name
+        required: true
+        default: seedream-aigc
+      version:
+        description: Plugin Version
+        required: true
+        default: 0.0.1
 
 jobs:
   repackage:
